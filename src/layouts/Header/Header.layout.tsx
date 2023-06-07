@@ -1,4 +1,4 @@
-import { Box, Flex, Text, IconButton, Button, Stack, Collapse, Link, Popover, PopoverTrigger, useColorModeValue, useBreakpointValue, useDisclosure, useColorMode } from '@chakra-ui/react';
+import { Box, Flex, Text, IconButton, Button, Stack, Collapse, Link, Popover, PopoverTrigger, useColorModeValue, useDisclosure, useColorMode } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, AddIcon } from '@chakra-ui/icons';
 
 interface NavItem {
@@ -17,7 +17,7 @@ const NAV_ITEMS: Array<NavItem> = [
   }
 ];
 
-export default function WithSubnavigation() {
+export const Header = () => {
 
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
