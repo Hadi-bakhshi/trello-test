@@ -4,7 +4,12 @@ import { PublicRtoutes } from './index';
 import ScrollToTop from './ScrollToTop';
 import { PATHS } from 'configs';
 
-const LazyHomePage = React.lazy(() => import("pages/Home/Home.page"));
+const LazyHomePage = React.lazy(async () => {
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  return import("pages/Home/Home.page");
+});
+
+// const LazyHomePage = React.lazy(() => import("pages/Home/Home.page"));
 const LazyAboutUsPage = React.lazy(() => import("pages/AboutUs/About-Us.page"));
 const LazyNotFoundPage = React.lazy(() => import("pages/NotFound/Not-Found.page"));
 
