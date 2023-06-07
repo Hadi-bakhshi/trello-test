@@ -1,5 +1,7 @@
-import { Box, Flex, Text, IconButton, Button, Stack, Collapse, Link, Popover, PopoverTrigger, useColorModeValue, useDisclosure, useColorMode } from '@chakra-ui/react';
+import { Box, Flex, Text, IconButton, Button, Stack, Collapse, Link, Popover, PopoverTrigger, useColorModeValue, useDisclosure, useColorMode, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, FormControl, FormLabel, Input, Textarea, useToast } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, AddIcon } from '@chakra-ui/icons';
+import { AddTodoAPI } from 'apis';
+import { useState } from 'react';
 
 interface NavItem {
   label: string;
@@ -19,8 +21,52 @@ const NAV_ITEMS: Array<NavItem> = [
 
 export const Header = () => {
 
+  const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onToggle } = useDisclosure();
+  const { isOpen: addOpen, onOpen, onClose } = useDisclosure();
+  const [disableAddBtn, setDisableAddBtn] = useState<boolean>(false);
+  const [todoData, setTodoData] = useState<{title: string, desc: string}>({
+    title: "",
+    desc: ""
+  })
+
+  const addNewTodo = () => {
+    setDisableAddBtn(true);
+    AddTodoAPI(todoData.title, todoData.desc).then(response => {      
+      if(response.status === 201) {
+        toast({
+          title: 'Todo Added.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+    }).catch(error => {
+      toast({
+        title: 'error',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+    }).finally(() => {
+      setDisableAddBtn(false);
+      setTodoData({
+        title: "",
+        desc: ""
+      });
+      onClose();
+    })
+  }
+
+  const handleNewTodo = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTodoData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+  
 
   return (
     <Box>
@@ -48,7 +94,7 @@ export const Header = () => {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify="flex-end" direction="row" spacing={2}>
-          <Button colorScheme="telegram" size="sm" h="auto" leftIcon={<AddIcon />}>Add</Button>
+          <Button colorScheme="telegram" size="sm" h="auto" leftIcon={<AddIcon />} onClick={onOpen}>Add</Button>
           <Button onClick={toggleColorMode}>{colorMode === 'light' ? <MoonIcon /> : <SunIcon />}</Button>
         </Stack>
 
@@ -65,6 +111,22 @@ export const Header = () => {
           ))}
         </Stack>
       </Collapse>
+
+      <Modal isOpen={addOpen} onClose={onClose} closeOnOverlayClick={false}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add Todo</ModalHeader>
+          <ModalCloseButton disabled={disableAddBtn}/>
+          <ModalBody>
+            <FormControl>
+              <Input type="text" placeholder="Todo Title" disabled={disableAddBtn} value={todoData.title} onChange={handleNewTodo} name="title"/>
+              <Textarea placeholder="Todo Description" my="10px" disabled={disableAddBtn} value={todoData.desc} onChange={handleNewTodo} name="desc"/>
+              <Button colorScheme="telegram" size="sm" h="40px" disabled={disableAddBtn} isLoading={disableAddBtn} w="100%" leftIcon={<AddIcon />} mb="10px" onClick={addNewTodo}>Add Todo</Button>
+            </FormControl>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
     </Box>
   );
 }
