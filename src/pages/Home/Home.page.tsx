@@ -1,6 +1,11 @@
+import { PageContainer } from "layouts";
+
 const HomePage = () => {
+
   return(
-    <span>Home Page</span>
+    <PageContainer>
+      Home Page
+    </PageContainer>
   )
 }
 export default HomePage;

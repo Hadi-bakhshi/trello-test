@@ -1,6 +1,10 @@
+import { PageContainer } from "layouts";
+
 const AboutUsPage = () => {
   return(
-    <span>About Us Page</span>
+    <PageContainer>
+      About Us Page
+    </PageContainer>
   )
 }
 export default AboutUsPage;

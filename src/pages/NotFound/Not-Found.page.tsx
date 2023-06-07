@@ -1,6 +1,10 @@
+import { PageContainer } from "layouts";
+
 const NotFoundPage = () => {
   return(
-    <span>Not Found Page</span>
+    <PageContainer>
+      Not Found Page
+    </PageContainer>
   )
 }
 export default NotFoundPage;
