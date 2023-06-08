@@ -33,9 +33,9 @@ const HomePage = () => {
       {
         loading ? <Loading/> :
         <Flex justifyContent="center" alignItems="center" gap="25px" py="25px" h="100%" flexWrap="wrap">
-          <TodoColumn todoList={todos?.filter((todo: any) => todo.status === "todo")} type="todo" headerTitle="Todo"/>
-          <TodoColumn todoList={todos?.filter((todo: any) => todo.status === "wip")} type="wip"  headerTitle="In Progress"/>
-          <TodoColumn todoList={todos?.filter((todo: any) => todo.status === "done")} type="done" headerTitle="Done"/>
+          <TodoColumn todoList={todos?.filter((todo: any) => todo.status === "todo")} headerTitle="Todo"/>
+          <TodoColumn todoList={todos?.filter((todo: any) => todo.status === "wip")} headerTitle="In Progress"/>
+          <TodoColumn todoList={todos?.filter((todo: any) => todo.status === "done")} headerTitle="Done"/>
         </Flex>
       }
     </PageContainer>
