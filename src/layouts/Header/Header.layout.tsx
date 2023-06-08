@@ -1,7 +1,8 @@
 import { Box, Flex, Text, IconButton, Button, Stack, Collapse, Link, Popover, PopoverTrigger, useColorModeValue, useDisclosure, useColorMode, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, FormControl, FormLabel, Input, Textarea, useToast } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon, AddIcon } from '@chakra-ui/icons';
-import { AddTodoAPI } from 'apis';
-import { useState } from 'react';
+import { AddTodoAPI, GetTodosAPI } from 'apis';
+import { useContext, useState } from 'react';
+import { TodoContext } from 'context';
 
 interface NavItem {
   label: string;
@@ -30,32 +31,35 @@ export const Header = () => {
     title: "",
     desc: ""
   })
+  const { setLoading } = useContext(TodoContext);
+  const { setTodos } = useContext(TodoContext);
 
   const addNewTodo = () => {
     setDisableAddBtn(true);
     AddTodoAPI(todoData.title, todoData.desc).then(response => {      
       if(response.status === 201) {
-        toast({
-          title: 'Todo Added.',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        })
+        toast({ title: 'Todo Added.', status: 'success', duration: 3000, isClosable: true })
       }
-    }).catch(error => {
-      toast({
-        title: 'error',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
+    }).catch(() => {
+      toast({ title: 'error', status: 'error', duration: 3000, isClosable: true })
     }).finally(() => {
+      getTodos();
       setDisableAddBtn(false);
-      setTodoData({
-        title: "",
-        desc: ""
-      });
+      setTodoData({ title: "", desc: "" });
       onClose();
+    })
+  }
+
+  const getTodos = () => {
+    setLoading(true);
+    GetTodosAPI().then(response => {
+      if(response.status === 200) {
+        setTodos(response.data);
+      }
+    }).catch(() => {
+      toast({ title: 'Error To Get Todos !', status: 'error', duration: 3000, isClosable: true })
+    }).finally(() => {
+      setLoading(false);
     })
   }
 
