@@ -31,8 +31,7 @@ export const Header = () => {
     title: "",
     desc: ""
   })
-  const { setLoading } = useContext(TodoContext);
-  const { setTodos } = useContext(TodoContext);
+  const { setLoading, setTodos } = useContext(TodoContext);
 
   const addNewTodo = () => {
     setDisableAddBtn(true);
