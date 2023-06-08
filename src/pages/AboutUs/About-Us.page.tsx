@@ -6,7 +6,10 @@ const AboutUsPage = () => {
     <PageContainer>
       <Box>
         <Text fontSize="25px" fontWeight="bold" borderBottom="1px solid white" w="fit-content" m="0 auto">Behineh Kavan Keyfiat</Text>
-        <Text>Mohammad Reza Ebrahimi</Text>
+        <Text borderBottom="1px solid white" w="fit-content" m="0 auto">Mohammad Reza Ebrahimi</Text>
+        <Box mt="25px">
+          <Text fontSize="14px">React + Vite + TS + Chakra UI + Mock API</Text>
+        </Box>
       </Box>
     </PageContainer>
   )
